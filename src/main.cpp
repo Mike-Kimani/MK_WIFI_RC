@@ -10,9 +10,14 @@ pinMode(blueonboard, OUTPUT);
 pinMode(in1, OUTPUT);
 pinMode(in2, OUTPUT);
 pinMode(ena, OUTPUT);
+Serial.begin(9600);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-indicate(blueonboard);
+  //indicate(blueonboard);
+  driveforward();
+  throttletime();
+  Serial.println(throttle);
+  timedacceleration();
 }
