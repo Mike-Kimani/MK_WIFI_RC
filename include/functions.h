@@ -33,14 +33,15 @@ void drivemotor(int avalue)
 //Time variables
 int ton;
 int period = 0;
-int oldtime = 0;
 int throttle;
 int basetime = 0;
+int motor_time = 0;
 
+//Accelerator and decelerator
 int button_state = 0;
 int button2_state = 0;
 
-int check_motor =0;
+
 
 
 //Time to throttle motor
@@ -55,40 +56,84 @@ int throttletime()
     {
     }
 
+    //Read accelerator and brake status
     button_state = digitalRead(button);
     button2_state = digitalRead(button2);
     
-
-    while (period<=5000)
+    while (motor_time<=6000)
     {
-        if (button_state == 1)
+        //Accelerating
+        if (button_state == 1 && button2_state ==0)
         {
             ton = millis();
-            period = ton - basetime;
-
+            motor_time = ton - basetime;
+            period = period + 4;
+            period = constrain(period, 0, 5025);
             return period;
         }
-
-        else
+        //Should be Coasting but we losing some speed
+        //Consider changing to pure coasting
+        else if(button_state == 0 && button2_state ==0)
         {
-            period = period - 10;
+            period = period - 2;
+            period = constrain(period, 0, 5025);
             basetime = 0;
             return period;
         }
+        //Rapid deceleration
+        else if(button_state == 0 && button2_state == 1)
+        {
+            period = period - 30;
+            period = constrain(period, 0, 5025);
+            basetime = 0;
+            return period;
+        }
+        //Both buttons pressed speed maintained
+        else
+        {
+            period = period;
+            basetime = 0;
+            return period;
+        }        
+
     }
 
-    if(button_state == 1) 
+    //Back to accelerating time. Losing time consider also increasing speed here
+    if(button_state == 1 && button2_state == 0) 
     {
         period = period;
+        period = constrain(period, 0, 5025);
+        motor_time = 0;
         basetime = 0;
         return period;
     }
 
-    else
+    //Coasting. Losing the slightest of speeds
+    else if(button_state == 0 && button2_state == 0)
     {
-        period = period - 10;
+        period = period - 2;
+        motor_time = 0;
+        period = constrain(period, 0, 5025);
         basetime = 0;
         return period;
+    }
+
+    //Hard braking
+    else if(button_state == 0 && button2_state ==1)
+    {
+        period = period - 40;
+        period = constrain(period, 0, 5025);
+        motor_time = 0;
+        basetime = 0;
+        return period;
+    }
+    //Both buttons pressed back to coasting
+    else
+    {
+        period = period;
+        motor_time = 0;
+        basetime = 0;
+        return period;        
     }
 
 }

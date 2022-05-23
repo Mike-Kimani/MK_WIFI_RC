@@ -6,5 +6,6 @@
 #define in2 19
 #define ena 5
 
+//Accelerator and decelerator buttons
 #define button 32
-#define button2 35
+#define button2 33
