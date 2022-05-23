@@ -10,6 +10,8 @@ pinMode(blueonboard, OUTPUT);
 pinMode(in1, OUTPUT);
 pinMode(in2, OUTPUT);
 pinMode(ena, OUTPUT);
+pinMode(button, INPUT_PULLDOWN);
+pinMode(button2, INPUT_PULLDOWN);
 Serial.begin(9600);
 }
 
@@ -18,6 +20,6 @@ void loop() {
   //indicate(blueonboard);
   driveforward();
   throttletime();
-  Serial.println(throttle);
+  Serial.println(period);
   timedacceleration();
 }

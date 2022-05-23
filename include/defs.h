@@ -5,3 +5,6 @@
 #define in1 18
 #define in2 19
 #define ena 5
+
+#define button 32
+#define button2 35
