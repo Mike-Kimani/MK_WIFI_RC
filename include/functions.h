@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <defs.h>
+#include <ESP32Servo.h>
 
 //BLinking function
 void indicate(int indicator)
