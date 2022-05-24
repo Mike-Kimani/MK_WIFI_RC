@@ -2,6 +2,8 @@
 #include <defs.h>
 #include <ESP32Servo.h>
 
+Servo steeringservo;
+
 //BLinking function
 void indicate(int indicator)
 {
@@ -144,4 +146,26 @@ void timedacceleration()
 {
     throttle = map(period, 0, 5150, 0, 255);
     drivemotor(throttle);
+}
+
+
+int steerangle = 75;
+void steeright()
+{
+    steerangle = steerangle + 5;
+    steerangle = constrain(steerangle, 22, 126);
+    steeringservo.write(steerangle);
+}
+
+void steerleft()
+{
+    steerangle = steerangle - 5;
+    steerangle = constrain(steerangle, 22, 126);
+    steeringservo.write(steerangle);
+}
+
+void drivestraight()
+{
+    steerangle =75;
+    steeringservo.write(steerangle);
 }

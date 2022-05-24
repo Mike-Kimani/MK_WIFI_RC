@@ -9,3 +9,6 @@
 //Accelerator and decelerator buttons
 #define button 32
 #define button2 33
+
+//Servo pin
+#define servopin 23

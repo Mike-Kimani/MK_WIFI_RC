@@ -140,10 +140,10 @@ void Servo::write(int value)
     // treat values less than MIN_PULSE_WIDTH (500) as angles in degrees (valid values in microseconds are handled as microseconds)
     if (value < MIN_PULSE_WIDTH)
     {
-        if (value < 0)
-            value = 0;
-        else if (value > 180)
-            value = 180;
+        if (value < 22)
+            value = 22;
+        else if (value > 126)
+            value = 126;
 
         value = map(value, 0, 180, this->min, this->max);
     }
@@ -164,6 +164,10 @@ void Servo::writeMicroseconds(int value)
         this->ticks = value;
         // do the actual write
         pwm.write( this->ticks);
+    }
+    else
+    {
+        Serial.println("Include .attach function in your code");
     }
 }
 
