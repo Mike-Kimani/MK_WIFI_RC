@@ -7,8 +7,13 @@
 #define ena 5
 
 //Accelerator and decelerator buttons
-#define button 32
-#define button2 33
+#define accelerator 32
+#define decelerator 33
 
 //Servo pin
 #define servopin 23
+
+//Steering buttons
+#define rightsteer 25
+#define leftsteer 26
+#define centresteer 27

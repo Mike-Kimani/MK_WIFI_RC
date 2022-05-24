@@ -12,8 +12,12 @@ pinMode(in2, OUTPUT);
 pinMode(ena, OUTPUT);
 //Check if line 14 below is necessary
 //pinMode(servopin, OUTPUT);
-pinMode(button, INPUT_PULLDOWN);
-pinMode(button2, INPUT_PULLDOWN);
+pinMode(accelerator, INPUT_PULLDOWN);
+pinMode(decelerator, INPUT_PULLDOWN);
+pinMode(rightsteer, INPUT_PULLDOWN);
+pinMode(leftsteer, INPUT_PULLDOWN);
+pinMode(centresteer, INPUT_PULLDOWN);
+
 
 steeringservo.attach(servopin);
 
@@ -22,6 +26,5 @@ Serial.begin(9600);
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //indicate(blueonboard);
-  drivestraight();
+  indicate(blueonboard);
 }

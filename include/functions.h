@@ -41,8 +41,8 @@ int basetime = 0;
 int motor_time = 0;
 
 //Accelerator and decelerator
-int button_state = 0;
-int button2_state = 0;
+int accelerator_state = 0;
+int decelerator_state = 0;
 
 
 
@@ -60,13 +60,13 @@ int throttletime()
     }
 
     //Read accelerator and brake status
-    button_state = digitalRead(button);
-    button2_state = digitalRead(button2);
+    accelerator_state = digitalRead(accelerator);
+    decelerator_state = digitalRead(decelerator);
     
     while (motor_time<=6000)
     {
         //Accelerating
-        if (button_state == 1 && button2_state ==0)
+        if (accelerator_state == 1 && decelerator_state ==0)
         {
             ton = millis();
             motor_time = ton - basetime;
@@ -76,7 +76,7 @@ int throttletime()
         }
         //Should be Coasting but we losing some speed
         //Consider changing to pure coasting
-        else if(button_state == 0 && button2_state ==0)
+        else if(accelerator_state == 0 && decelerator_state ==0)
         {
             period = period - 2;
             period = constrain(period, 0, 5025);
@@ -84,7 +84,7 @@ int throttletime()
             return period;
         }
         //Rapid deceleration
-        else if(button_state == 0 && button2_state == 1)
+        else if(accelerator_state == 0 && decelerator_state == 1)
         {
             period = period - 30;
             period = constrain(period, 0, 5025);
@@ -102,7 +102,7 @@ int throttletime()
     }
 
     //Back to accelerating time. Losing time consider also increasing speed here
-    if(button_state == 1 && button2_state == 0) 
+    if(accelerator_state == 1 && decelerator_state == 0) 
     {
         period = period;
         period = constrain(period, 0, 5025);
@@ -112,7 +112,7 @@ int throttletime()
     }
 
     //Coasting. Losing the slightest of speeds
-    else if(button_state == 0 && button2_state == 0)
+    else if(accelerator_state == 0 && decelerator_state == 0)
     {
         period = period - 2;
         motor_time = 0;
@@ -122,7 +122,7 @@ int throttletime()
     }
 
     //Hard braking
-    else if(button_state == 0 && button2_state ==1)
+    else if(accelerator_state == 0 && decelerator_state ==1)
     {
         period = period - 40;
         period = constrain(period, 0, 5025);
@@ -144,12 +144,15 @@ int throttletime()
 //Accelerate/Decelerate motor
 void timedacceleration()
 {
+    throttletime();
     throttle = map(period, 0, 5150, 0, 255);
     drivemotor(throttle);
 }
 
-
+//Initial steering angle at the middle
 int steerangle = 75;
+
+//Turn right
 void steeright()
 {
     steerangle = steerangle + 5;
@@ -157,6 +160,7 @@ void steeright()
     steeringservo.write(steerangle);
 }
 
+//Turn left
 void steerleft()
 {
     steerangle = steerangle - 5;
@@ -164,8 +168,43 @@ void steerleft()
     steeringservo.write(steerangle);
 }
 
+//Straight ahead
 void drivestraight()
 {
-    steerangle =75;
+    steerangle = 75;
     steeringservo.write(steerangle);
+}
+
+//Steering button states
+int rightstate;
+int leftstate;
+int centerstate;
+
+//Steering decision making
+void steer()
+{
+    rightstate = digitalRead(rightsteer);
+    leftstate = digitalRead(leftsteer);
+    centerstate = digitalRead(centresteer);
+
+    if(rightstate == 0 && leftstate == 0 && centerstate == 0)
+    {
+        steerangle = steerangle;
+    }
+    else if(rightstate == 0 && leftstate == 1 && centerstate == 0)
+    {
+        steerleft();
+    }
+    else if(rightstate == 1 && leftstate == 0 && centerstate == 0)
+    {
+        steeright();
+    }
+    else if(rightstate == 0 && leftstate == 0 && centerstate == 1)
+    {
+        drivestraight();
+    }
+    else
+    {
+        steerangle = steerangle;
+    }
 }
