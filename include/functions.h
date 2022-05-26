@@ -114,7 +114,7 @@ int throttletime()
     //Coasting. Losing the slightest of speeds
     else if(accelerator_state == 0 && decelerator_state == 0)
     {
-        period = period - 2;
+        period = period - 1;
         motor_time = 0;
         period = constrain(period, 0, 5025);
         basetime = 0;
@@ -144,7 +144,6 @@ int throttletime()
 //Accelerate/Decelerate motor
 void timedacceleration()
 {
-    throttletime();
     throttle = map(period, 0, 5150, 0, 255);
     drivemotor(throttle);
 }
@@ -155,7 +154,7 @@ int steerangle = 75;
 //Turn right
 void steeright()
 {
-    steerangle = steerangle + 5;
+    steerangle = steerangle + 1;
     steerangle = constrain(steerangle, 22, 126);
     steeringservo.write(steerangle);
 }
@@ -163,7 +162,7 @@ void steeright()
 //Turn left
 void steerleft()
 {
-    steerangle = steerangle - 5;
+    steerangle = steerangle - 1;
     steerangle = constrain(steerangle, 22, 126);
     steeringservo.write(steerangle);
 }
