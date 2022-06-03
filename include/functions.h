@@ -40,9 +40,7 @@ int throttle;
 int basetime = 0;
 int motor_time = 0;
 
-//Accelerator and decelerator
-int accelerator_state = 0;
-int decelerator_state = 0;
+
 
 
 
@@ -60,8 +58,8 @@ int throttletime()
     }
 
     //Read accelerator and brake status
-    accelerator_state = digitalRead(accelerator);
-    decelerator_state = digitalRead(decelerator);
+    // accelerator_state = digitalRead(accelerator);
+    // decelerator_state = digitalRead(decelerator);
     
     while (motor_time<=6000)
     {
@@ -148,6 +146,8 @@ void timedacceleration()
     drivemotor(throttle);
 }
 
+
+
 //Initial steering angle at the middle
 int steerangle = 75;
 
@@ -174,17 +174,14 @@ void drivestraight()
     steeringservo.write(steerangle);
 }
 
-//Steering button states
-int rightstate;
-int leftstate;
-int centerstate;
+
 
 //Steering decision making
 void steer()
 {
-    rightstate = digitalRead(rightsteer);
-    leftstate = digitalRead(leftsteer);
-    centerstate = digitalRead(centresteer);
+    // rightstate = digitalRead(rightsteer);
+    // leftstate = digitalRead(leftsteer);
+    // centerstate = digitalRead(centresteer);
 
     if(rightstate == 0 && leftstate == 0 && centerstate == 0)
     {
