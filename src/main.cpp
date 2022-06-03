@@ -28,12 +28,13 @@ clientinput();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  //put your main code here, to run repeatedly:
   //indicate(blueonboard);
-  // drivereverse();
-  // throttletime();
-  // steer();
-  // Serial.println(accelerator_state);
-  // timedacceleration();
+  driveforward();
+  throttletime();
+  steer();
+  Serial.println(accelerator_state);
+  timedacceleration();
+  hardbrake();
 }
 

@@ -9,8 +9,7 @@ void indicate(int indicator)
 {
     digitalWrite(indicator, HIGH);
     delay(100);
-    digitalWrite(indicator, LOW);
-    delay(100);
+
 }
 
 //Forward direction
@@ -146,7 +145,20 @@ void timedacceleration()
     drivemotor(throttle);
 }
 
-
+void hardbrake()
+{
+    if(emergency_state == 1)
+    {
+        digitalWrite(ena, LOW);
+        digitalWrite(in1, LOW);
+        digitalWrite(in2, LOW);
+        ESP.restart();
+    }
+    else
+    {
+        
+    }
+}
 
 //Initial steering angle at the middle
 int steerangle = 75;
